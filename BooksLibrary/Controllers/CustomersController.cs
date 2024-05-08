@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BooksLibrary.Data;
 using BooksLibrary.Models;
+using Humanizer;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 
 namespace BooksLibrary.Controllers
 {
@@ -147,6 +149,22 @@ namespace BooksLibrary.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            if (string.IsNullOrEmpty(searchString))
+            {
+                return View(await _context.Customers.ToListAsync());
+            }
+
+            var customers = await _context.Customers
+                .Where(c => c.Name.Contains(searchString))
+                .ToListAsync();
+
+            return View("Index", customers);
         }
 
         private bool CustomerExists(int id)

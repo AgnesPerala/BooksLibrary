@@ -11,8 +11,8 @@
 </p>
 <form asp-controller="BookLoans" asp-action="Search" method="post">
     <div class="form-group">
-        <label for="customerId">Search for Customer:</label>
-        <select id="customerId" name="customerId" class="form-control">
+        <label for="searchTerm">Search for Customer:</label>
+        <select id="searchTerm" name="searchTerm" class="form-control" onchange="this.form.submit()">
             <option value="">Select Customer</option>
             @foreach (var customer in ViewBag.Customers)
             {
@@ -20,11 +20,10 @@
             }
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Search</button>
-    <div>
-        <a asp-action="Index" class="btn btn-dark">Show All</a>
-    </div>
 </form>
+<div>
+    <a asp-action="Index" class="btn btn-dark">Show All</a>
+</div>
 <table class="table">
     <thead>
         <tr>

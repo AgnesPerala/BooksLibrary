@@ -9,6 +9,19 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<p>
+    @using (Html.BeginForm("Search", "Customers", FormMethod.Get))
+    {
+        <div class="form-group">
+            <input type="text" name="searchString" class="form-control" placeholder="Search by name" />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    }
+</p>
+<div>
+    <a asp-action="Index" class="btn btn-dark">Show All</a>
+</div>
+
 <table class="table">
     <thead>
         <tr>

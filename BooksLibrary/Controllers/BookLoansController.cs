@@ -29,7 +29,7 @@ namespace BooksLibrary.Controllers
             var customers = await GetCustomersList();
 
             // Sätt kundlistan i ViewBag
-            ViewBag.Customers = customers;
+            ViewBag.Customers = await _context.Customers.ToListAsync();
 
             return View(bookLoans);
         }
@@ -171,7 +171,7 @@ namespace BooksLibrary.Controllers
         }
 
         // GET: BookLoans/Search
-        public IActionResult Search()
+        public async Task<IActionResult> Search()
         {
             return View();
         }
@@ -185,7 +185,7 @@ namespace BooksLibrary.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Name.Contains(searchTerm));
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId.ToString() == searchTerm);
             if (customer == null)
             {
                 // Om ingen matchande bok hittades, returnera till Index-vyn
@@ -197,6 +197,9 @@ namespace BooksLibrary.Controllers
                 .Include(bl => bl.Book)
                 .Where(bl => bl.CustomerId == customer.CustomerId)
                 .ToListAsync();
+
+
+            ViewBag.Customers = await _context.Customers.ToListAsync();
 
             return View("Index", bookLoans);
         }
